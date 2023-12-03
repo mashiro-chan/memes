@@ -64,17 +64,17 @@ export async function apply(ctx: Context, config: Config) {
 
       const cmd = ctx.command(
         `${cmdName} ${[...Array(info.params.min_images).keys()]
-          .map((x) => `<image${x}:string>`)
+          .map((x) => `<图片${x + 1}:string>`)
           .join(' ')} ${[...Array(info.params.min_texts).keys()]
-          .map((x) => `<text${x}:string>`)
+          .map((x) => `<文本${x + 1}:string>`)
           .join(' ')} ${[
           ...Array(info.params.max_images - info.params.min_images).keys(),
         ]
-          .map((x) => `[image${x}:string]`)
+          .map((x) => `[可选图片${x + 1}:string]`)
           .join(' ')} ${[
           ...Array(info.params.max_texts - info.params.min_texts).keys(),
         ]
-          .map((x) => `[text${x}:string]`)
+          .map((x) => `[可选文本${x + 1}:string]`)
           .join(' ')}`,
         `生成${memeName}图片`,
       )
@@ -105,7 +105,7 @@ export async function apply(ctx: Context, config: Config) {
             await session.send(
               h.image(
                 result.data as Buffer,
-                result.headers['Content-Type'] as string,
+                (result.headers['Content-Type'] as string) || 'image/png',
               ),
             )
 
@@ -129,7 +129,7 @@ export async function apply(ctx: Context, config: Config) {
 
           return h.image(
             result.data as Buffer,
-            result.headers['Content-Type'] as string,
+            (result.headers['Content-Type'] as string) || 'image/png',
           )
         } catch (e) {
           if ((e as AxiosError).response?.data) {
