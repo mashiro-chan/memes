@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios'
 import type { Context } from 'koishi'
 import { Schema, h } from 'koishi'
 
@@ -131,7 +132,10 @@ export async function apply(ctx: Context, config: Config) {
             result.headers['Content-Type'] as string,
           )
         } catch (e) {
-          l.warn(e)
+          if ((e as AxiosError).response?.data) {
+            const err = (e as AxiosError<Buffer>).response.data.toString()
+            if (!err.includes('ParamsMismatch')) l.warn(err)
+          } else l.warn(e)
           void session.send(
             `生成图片失败，请检查输入格式哦~使用示例：\n${example}`,
           )
