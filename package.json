@@ -1,7 +1,7 @@
 {
   "name": "@m6c/koishi-plugin-memes",
   "description": "用于 MeetWq/meme-generator 的表情包生成器",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
